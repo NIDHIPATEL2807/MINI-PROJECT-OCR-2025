@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      margin: 0;
+      padding: 40px;
+      color: #fff;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 48px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-shadow: 0 0 18px rgba(255, 255, 255, 0.6);
+      animation: glow 2s infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #8a2be2; }
+      to { text-shadow: 0 0 25px #ff00ff; }
+    }
+    
+    form {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 420px;
+      margin: auto;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    form:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 50px rgba(255, 0, 255, 0.3);
+    }
+    
+    input[type="file"] {
+      padding: 12px;
+      width: 100%;
+      border: 2px dashed rgba(255, 255, 255, 0.5);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      transition: 0.3s;
+    }
+    
+    input[type="file"]:hover {
+      border-color: #ff00ff;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff0099, #4937ff);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255, 0, 153, 0.6);
+      transition: 0.3s;
+    }
+    
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(255, 0, 153, 0.9);
+    }
+    
+    h3 {
+      margin-top: 40px;
+      font-size: 28px;
+      text-shadow: 0 0 12px #ff00ff;
+    }
+    
+    pre {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      width: 80%;
+      margin: auto;
+      border-radius: 15px;
+      text-align: left;
+      white-space: pre-wrap;
+      min-height: 150px;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+    </style>
+    
+  <title>Smart OCR</title>
+</head>
+<body>
+
+<h1>OCR Demo – Devanagari</h1>
+
+<form id="uploadForm">
+  <input type="file" id="imageInput" name="image" accept="image/*" required>
+  <button type="submit">Predict</button>
+</form>
+
+<h3>Result:</h3>
+<pre id="result"></pre>
+
+<script>
+document.getElementById("uploadForm").onsubmit = async function(e) {
+    e.preventDefault();
+
+    let fd = new FormData();
+    fd.append("image", document.getElementById("imageInput").files[0]);
+
+    const res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: fd
+    });
+
+    const data = await res.json();
+    document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+};
+</script>
+
+</body>
+</html> 
