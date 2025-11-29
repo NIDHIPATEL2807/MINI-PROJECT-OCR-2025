@@ -137,6 +137,8 @@ def predict():
     predicted_texts_sorted = sorted(predicted_texts, key=lambda t: (t[1], t[0]))
     final_predictions = [t[2] for t in predicted_texts_sorted]
 
+
+
     return jsonify(final_predictions)
 
 

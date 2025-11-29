@@ -55,9 +55,12 @@
       transition: 0.3s;
     }
     
-    input[type="file"]:hover {
-      border-color: #ff00ff;
-      background: rgba(255, 255, 255, 0.15);
+    #preview {
+      margin-top: 25px;
+      max-width: 80%;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
+      display: none;
     }
     
     button {
@@ -109,10 +112,24 @@
   <button type="submit">Predict</button>
 </form>
 
+<!-- ✅ Image Preview -->
+<img id="preview" />
+
 <h3>Result:</h3>
 <pre id="result"></pre>
 
 <script>
+// Show image preview
+document.getElementById("imageInput").onchange = function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const img = document.getElementById("preview");
+        img.src = URL.createObjectURL(file);
+        img.style.display = "block";
+    }
+};
+
+// Send to backend
 document.getElementById("uploadForm").onsubmit = async function(e) {
     e.preventDefault();
 
@@ -130,4 +147,82 @@ document.getElementById("uploadForm").onsubmit = async function(e) {
 </script>
 
 </body>
-</html> 
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #preview {
+      max-width: 80%;
+      margin-top: 20px;
+      display: none;
+      border-radius: 10px;
+    }
+
+    pre {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      width: 80%;
+      margin: auto;
+      border-radius: 10px;
+      font-size: 20px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>OCR Demo</h1>
+
+<form id="uploadForm">
+    <input type="file" id="imageInput" accept="image/*" required>
+    <button type="submit">Predict</button>
+</form>
+
+<img id="preview" />
+
+<h3>Predicted Text:</h3>
+<pre id="result"></pre>
+
+<script>
+// Show preview image
+document.getElementById("imageInput").onchange = function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const img = document.getElementById("preview");
+        img.src = URL.createObjectURL(file);
+        img.style.display = "block";
+    }
+};
+
+// Call backend
+document.getElementById("uploadForm").onsubmit = async function(e) {
+    e.preventDefault();
+
+    let fd = new FormData();
+    fd.append("image", document.getElementById("imageInput").files[0]);
+
+    const res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: fd
+    });
+
+    const data = await res.json();
+
+    // JUST PRINT TEXT
+    document.getElementById("result").innerText = data.join(" ");
+};
+</script>
+
+</body>
+</html> -->
